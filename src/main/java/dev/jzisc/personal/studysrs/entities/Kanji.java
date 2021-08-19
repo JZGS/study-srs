@@ -1,11 +1,9 @@
 package dev.jzisc.personal.studysrs.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -37,9 +35,61 @@ public class Kanji {
     )
     private List<Kanji> priorKanjisConfused;
 
-    @ManyToMany(
-            fetch = FetchType.LAZY, mappedBy = "priorKanjisConfused"
-    )
+    @ManyToMany( fetch = FetchType.LAZY, mappedBy = "priorKanjisConfused" )
     private List<Kanji> createdLaterKanjisConfused;
+
+    public boolean addConfusion(Kanji confusion){
+        if(!confusion.containsConfusion(this)) {
+            if (priorKanjisConfused == null)
+                priorKanjisConfused = new ArrayList<>();
+            if (!priorKanjisConfused.contains(confusion))
+                priorKanjisConfused.add(confusion);
+            confusion.addConfusion(this);
+            return true;
+        } else{
+            if (createdLaterKanjisConfused == null)
+                createdLaterKanjisConfused = new ArrayList<>();
+            if (!createdLaterKanjisConfused.contains(confusion)) {
+                createdLaterKanjisConfused.add(confusion);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Kanji> getConfusions(){
+        if (priorKanjisConfused == null) {
+            if (createdLaterKanjisConfused == null)
+                return new ArrayList<>();
+            else
+                return new ArrayList<>(createdLaterKanjisConfused);
+        }else {
+            List<Kanji> res = new ArrayList<>(priorKanjisConfused);
+            if (createdLaterKanjisConfused != null)
+                res.addAll(createdLaterKanjisConfused);
+            return res;
+        }
+    }
+
+    public boolean containsConfusion(Kanji confusion){
+        boolean contained = false;
+        if (priorKanjisConfused != null)
+            contained = priorKanjisConfused.contains(confusion);
+        if(!contained && createdLaterKanjisConfused != null)
+            contained = createdLaterKanjisConfused.contains(confusion);
+        return contained;
+    }
+
+    public List<Kanji> getPriorKanjisConfused(){
+        if (priorKanjisConfused == null)
+            priorKanjisConfused = new ArrayList<>();
+        return priorKanjisConfused;
+    }
+
+    public List<Kanji> getCreatedLaterKanjisConfused(){
+        if (createdLaterKanjisConfused == null)
+            createdLaterKanjisConfused = new ArrayList<>();
+        return createdLaterKanjisConfused;
+    }
 
 }
