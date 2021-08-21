@@ -1,7 +1,7 @@
 package dev.jzisc.personal.studysrs.unit.repositories;
 
-import dev.jzisc.personal.studysrs.entities.Word;
-import dev.jzisc.personal.studysrs.repositories.VocabRepository;
+import dev.jzisc.personal.studysrs.model.Word;
+import dev.jzisc.personal.studysrs.repository.VocabRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,10 @@ public class VocabRepositoryTests {
     @DisplayName("Save new word successfully")
     public void successfullySaveNewWord(){
         Word word = repository.saveAndFlush(
-                new Word(null, "中学校", "チュウガッコウ", "Junior High School")
+                new Word()
+                .setWord("中学校")
+                .setReading("チュウガッコウ")
+                .setMeaning("Junior High School")
         );
 
         assertThat(word.getWord_id(), notNullValue());
@@ -41,11 +44,18 @@ public class VocabRepositoryTests {
     @Test
     @DisplayName("Update word's information")
     public void successfullyUpdateWord(){
-        repository.saveAndFlush(
-                new Word(null, "中学校", "チュウガッコウ", "Junior High School")
+        Word saved = repository.saveAndFlush(
+                new Word()
+                    .setWord("中学校")
+                    .setReading("チュウガッコウ")
+                    .setMeaning("Junior High School")
         );
 
-        Word word = new Word(1, "中学校", "チュウガッコウ", "Example");
+        Word word = new Word()
+                .setWord_id(saved.getWord_id())
+                .setWord("中学校")
+                .setReading("チュウガッコウ")
+                .setMeaning("Junior High School");
 
         Word updated = repository.saveAndFlush(word);
 
@@ -57,8 +67,11 @@ public class VocabRepositoryTests {
     @DisplayName("Delete word")
     public void successfullyDeleteWord(){
         Word word = repository.saveAndFlush(
-                new Word(null, "中学校", "チュウガッコウ", "Junior High School")
-        );
+                        new Word()
+                            .setWord("中学校")
+                            .setReading("チュウガッコウ")
+                            .setMeaning("Junior High School")
+                    );
 
         assertTrue(repository.existsById(1));
 

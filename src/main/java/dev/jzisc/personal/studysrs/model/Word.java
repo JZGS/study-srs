@@ -1,16 +1,15 @@
-package dev.jzisc.personal.studysrs.entities;
+package dev.jzisc.personal.studysrs.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
 @NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
+@Accessors(chain = true)
 @Entity
 @Table(name = "vocabulary")
 public class Word {

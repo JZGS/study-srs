@@ -1,14 +1,17 @@
-package dev.jzisc.personal.studysrs.entities;
+package dev.jzisc.personal.studysrs.model;
 
 import lombok.*;
+import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static lombok.AccessLevel.PRIVATE;
+
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter @Setter
+@Accessors(chain = true)
 @Entity
 @Table(name = "kanjis")
 public class Kanji {
@@ -33,26 +36,29 @@ public class Kanji {
             joinColumns = @JoinColumn(name = "kanji_id"),
             inverseJoinColumns = @JoinColumn(name = "confusion_id")
     )
+    @Getter(PRIVATE) @Setter(PRIVATE)
     private List<Kanji> priorKanjisConfused;
 
     @ManyToMany( fetch = FetchType.LAZY, mappedBy = "priorKanjisConfused" )
+    @Getter(PRIVATE) @Setter(PRIVATE)
     private List<Kanji> createdLaterKanjisConfused;
 
     public boolean addConfusion(Kanji confusion){
-        if(!confusion.containsConfusion(this)) {
-            if (priorKanjisConfused == null)
-                priorKanjisConfused = new ArrayList<>();
-            if (!priorKanjisConfused.contains(confusion))
-                priorKanjisConfused.add(confusion);
+        if (confusion != null
+                && confusion.kanji_id != this.kanji_id
+                && !this.containsConfusion(confusion))
+        {
+            if ( confusion.kanji_id != null && ( this.kanji_id == null || confusion.kanji_id < this.kanji_id )) {
+                if (this.priorKanjisConfused == null)
+                    this.priorKanjisConfused = new ArrayList<>();
+                this.priorKanjisConfused.add(confusion);
+            } else {
+                if (this.createdLaterKanjisConfused == null)
+                    this.createdLaterKanjisConfused = new ArrayList<>();
+                this.createdLaterKanjisConfused.add(confusion);
+            }
             confusion.addConfusion(this);
             return true;
-        } else{
-            if (createdLaterKanjisConfused == null)
-                createdLaterKanjisConfused = new ArrayList<>();
-            if (!createdLaterKanjisConfused.contains(confusion)) {
-                createdLaterKanjisConfused.add(confusion);
-                return true;
-            }
         }
         return false;
     }
@@ -63,12 +69,18 @@ public class Kanji {
                 return new ArrayList<>();
             else
                 return new ArrayList<>(createdLaterKanjisConfused);
-        }else {
+        } else {
             List<Kanji> res = new ArrayList<>(priorKanjisConfused);
             if (createdLaterKanjisConfused != null)
                 res.addAll(createdLaterKanjisConfused);
             return res;
         }
+    }
+
+    public Kanji setConfusions(List<Kanji> confusions){
+        if (confusions != null)
+            confusions.stream().forEach( confusion -> this.addConfusion(confusion) );
+        return this;
     }
 
     public boolean containsConfusion(Kanji confusion){
@@ -78,18 +90,6 @@ public class Kanji {
         if(!contained && createdLaterKanjisConfused != null)
             contained = createdLaterKanjisConfused.contains(confusion);
         return contained;
-    }
-
-    public List<Kanji> getPriorKanjisConfused(){
-        if (priorKanjisConfused == null)
-            priorKanjisConfused = new ArrayList<>();
-        return priorKanjisConfused;
-    }
-
-    public List<Kanji> getCreatedLaterKanjisConfused(){
-        if (createdLaterKanjisConfused == null)
-            createdLaterKanjisConfused = new ArrayList<>();
-        return createdLaterKanjisConfused;
     }
 
 }
