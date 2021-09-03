@@ -1,13 +1,13 @@
 package dev.jzisc.personal.studysrs.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 @NoArgsConstructor
 @Getter @Setter
 @Accessors(chain = true)
+@EqualsAndHashCode
+@ToString
 public class WordDTO {
 
     private Integer id;

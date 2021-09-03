@@ -1,0 +1,11 @@
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(1, '一日', 'イチニチ', 'One day');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(2, '一日', 'ついたち', 'First day of month');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(3, '一月', 'イチガツ', 'January');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(4, '一月', 'ひとつき', 'One month');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(5, '丸い', 'まるい', 'Round/Circular');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(6, '円い', 'まるい', 'Round/Circular');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(7, '日', 'ひ', 'Day');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(8, '火', 'ひ', 'Fire/Flame/Blaze');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(9, '一', 'イチ', 'One');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(10,'早い','はやい','Early/Fast/Quick/Hasty/');
+INSERT INTO vocabulary(word_id, word, reading, meaning) VALUES(11,'速い','はやい','Fast/Quick/Hasty');

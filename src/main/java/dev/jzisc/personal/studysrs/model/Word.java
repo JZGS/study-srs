@@ -1,8 +1,6 @@
 package dev.jzisc.personal.studysrs.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
@@ -11,6 +9,8 @@ import javax.persistence.*;
 @Getter @Setter
 @Accessors(chain = true)
 @Entity
+@ToString
+@EqualsAndHashCode
 @Table(name = "vocabulary")
 public class Word {
 

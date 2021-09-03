@@ -12,6 +12,8 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor
 @Getter @Setter
 @Accessors(chain = true)
+@ToString
+@EqualsAndHashCode
 @Entity
 @Table(name = "kanjis")
 public class Kanji {
@@ -37,11 +39,11 @@ public class Kanji {
             inverseJoinColumns = @JoinColumn(name = "confusion_id")
     )
     @Getter(PRIVATE) @Setter(PRIVATE)
-    private List<Kanji> priorKanjisConfused;
+    private List<Kanji> priorKanjisConfused = new ArrayList<>();
 
     @ManyToMany( fetch = FetchType.LAZY, mappedBy = "priorKanjisConfused" )
     @Getter(PRIVATE) @Setter(PRIVATE)
-    private List<Kanji> createdLaterKanjisConfused;
+    private List<Kanji> createdLaterKanjisConfused = new ArrayList<>();
 
     public boolean addConfusion(Kanji confusion){
         if (confusion != null
@@ -80,6 +82,10 @@ public class Kanji {
     public Kanji setConfusions(List<Kanji> confusions){
         if (confusions != null)
             confusions.stream().forEach( confusion -> this.addConfusion(confusion) );
+        else {
+            this.priorKanjisConfused = null;
+            this.createdLaterKanjisConfused = null;
+        }
         return this;
     }
 
