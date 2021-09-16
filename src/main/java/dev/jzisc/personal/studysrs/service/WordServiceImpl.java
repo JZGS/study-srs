@@ -7,6 +7,7 @@ import dev.jzisc.personal.studysrs.repository.VocabRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 import static dev.jzisc.personal.studysrs.dto.mapper.WordMapper.*;
 
 @AllArgsConstructor(onConstructor = @__({@Autowired}))
+@Service
 public class WordServiceImpl implements WordService{
 
     private VocabRepository repository;
